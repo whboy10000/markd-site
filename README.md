@@ -49,6 +49,12 @@ python3 -m http.server 8000 -d web
 - **Mermaid 示例**：按标签切换的图例是站点内手写的 SVG 示意图，用来表达渲染思路，不是 Markd 输出的截图。
 - 其余数据（解析 ~11ms、块级回写 ~3µs、帧耗时 ~9.5ms、25+ 图表类型、220+ 编译期 SVG 图标等）取自 Markd 项目本身的实现说明。
 
+## 部署
+
+推送到 `main` 会触发 `.github/workflows/deploy.yml`：它把 `web/` 整个目录作为 GitHub Pages 产物上传并部署，没有构建步骤。GitHub Pages 的「分支部署」源只接受仓库根目录或 `/docs`，而本站公开目录是 `web/`，所以走 Actions 部署，源码目录保持不变。
+
+另有一份私有站点通过 Qoder Sites 发布，访问范围保持私有；两者的内容都来自同一个 `web/` 目录。
+
 ## 许可说明
 
 本仓库只包含站点静态源码。Markd 程序本体采用 PolyForm Noncommercial 1.0.0 许可，版权信息见页面页脚与 Markd 主仓库。
