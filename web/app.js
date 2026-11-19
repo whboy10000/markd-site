@@ -179,18 +179,18 @@
       "# Hybrid View",
       "> 当前块显示源码，其余块实时渲染。",
       "点任意段落即进入编辑态 —— **星号、缩进、空行**全部可见，可精确到单个字符；失焦后立刻回到 ==富文本==，源文件里 `==` 与 `~~` 的顺序不会被改写。",
-      "- [x] 每帧只克隆**活动块**源码，其余块只读排版\n- [ ] 估算高度的虚拟滚动 —— 已放弃，改用全量渲染\n- [x] 粘贴空行拆分多块时才回退一次全文解析",
-      "| 路径 | 实测成本 |\n| --- | --- |\n| 打开文档 | ~11 ms，仅一次 |\n| 单块编辑 | ~3 µs |",
-      "```rust\nmatch focus {\n    Some(id) => editor.show_source(id),  // 增量解析当前块\n    None => editor.render_all(),         // 只读排版，不克隆\n}\n```",
+      "- [x] 每帧只克隆**活动块**源码，其余块只读排版\n- [x] 块高与顶边前缀和 + 二分定位：一帧只排落在视口内的块\n- [x] 粘贴空行拆分多块时才回退一次全文解析",
+      "| 路径 | 实测成本（1000 万字） |\n| --- | --- |\n| 打开文档 | 553 ms，仅一次 |\n| 静置一帧 | 1.5 ms |\n| 单块编辑 | ~5 µs |",
+      "```rust\nmatch focus {\n    Some(id) => editor.show_source(id),   // 增量解析当前块\n    None => editor.layout_visible(),      // 只排视口内的块\n}\n```",
       "$$\\int_{0}^{\\infty} e^{-x^{2}}\\,dx = \\frac{\\sqrt{\\pi}}{2}$$"
     ],
     en: [
       "# Hybrid View",
       "> The active block shows source; every other block renders live.",
       "Click any paragraph to edit raw Markdown — **asterisks, indentation, blank lines** stay visible, editable down to a single character. Blur and it is rich text again; the order of `==` and `~~` in your file is never rewritten.",
-      "- [x] Only the **active block** is cloned each frame; the rest lay out read-only\n- [ ] Estimated-height virtual scrolling — dropped in favour of full rendering\n- [x] A full reparse runs only when a pasted blank line splits a block",
-      "| Path | Measured |\n| --- | --- |\n| Open document | ~11 ms, once |\n| Edit one block | ~3 µs |",
-      "```rust\nmatch focus {\n    Some(id) => editor.show_source(id),  // reparse the active block\n    None => editor.render_all(),         // read-only layout, no clone\n}\n```",
+      "- [x] Only the **active block** is cloned each frame; the rest lay out read-only\n- [x] Prefix-sum heights, binary-searched down to the blocks inside the viewport\n- [x] A full reparse runs only when a pasted blank line splits a block",
+      "| Path | Measured (10M chars) |\n| --- | --- |\n| Open document | 553 ms, once |\n| Idle frame | 1.5 ms |\n| Edit one block | ~5 µs |",
+      "```rust\nmatch focus {\n    Some(id) => editor.show_source(id),   // reparse the active block\n    None => editor.layout_visible(),      // only blocks inside the viewport\n}\n```",
       "$$\\int_{0}^{\\infty} e^{-x^{2}}\\,dx = \\frac{\\sqrt{\\pi}}{2}$$"
     ]
   };
@@ -475,4 +475,78 @@
     paintDemo();
   });
   paintDemo();
+
+  /* --------------------------------------------------- 千万字标尺 / 10M scale */
+  var SCALE = {
+    blocks: 241046,
+    chars: 10000045,
+    winWidth: 4.6,
+    modes: {
+      now: {
+        laid: ["视口内 + 上下各 24 块", "in view + 24 each side"],
+        shapes: ["182", "182"],
+        idle: ["1.5 ms · 最差 4.0", "1.5 ms · 4.0 worst"],
+        scroll: ["5.5 ms · 最差 9.0", "5.5 ms · 9.0 worst"],
+        rss: ["271 MB", "271 MB"]
+      },
+      before: {
+        laid: ["241,046 块，全部", "all 241,046 blocks"],
+        shapes: ["754,878", "754,878"],
+        idle: ["5,703.8 ms · 最差 9,042.6", "5,703.8 ms · 9,042.6 worst"],
+        scroll: ["3,864.4 ms · 最差 8,446.7", "3,864.4 ms · 8,446.7 worst"],
+        rss: ["3,152 MB", "3,152 MB"]
+      }
+    }
+  };
+
+  var scaleStrip = document.querySelector(".scale-strip");
+  var scaleRange = document.getElementById("scalePos");
+  var scaleWindow = document.getElementById("scaleWindow");
+  var scaleOut = document.getElementById("scalePosOut");
+  var scaleNums = document.getElementById("scaleNums");
+  var scaleModeBtns = [].slice.call(document.querySelectorAll(".scale-mode [data-mode]"));
+
+  if (scaleStrip && scaleRange && scaleWindow) {
+    var scaleMode = "now";
+    var posEls = ["scaleBlock", "scaleChars", "scaleBlockEn", "scaleCharsEn"].map(function (id) {
+      return document.getElementById(id);
+    });
+
+    function group(n) { return Math.round(n).toLocaleString("en-US"); }
+
+    function paintScale() {
+      var p = Number(scaleRange.value) / 1000;
+      var w = scaleMode === "before" ? 100 : SCALE.winWidth;
+      var start = Math.min(100 - w, Math.max(0, p * 100 - w / 2));
+      scaleWindow.style.setProperty("--win-start", start.toFixed(2) + "%");
+      scaleWindow.style.setProperty("--win-w", w.toFixed(2) + "%");
+      if (scaleOut) scaleOut.textContent = (p * 100).toFixed(1) + "%";
+      var values = [group(p * (SCALE.blocks - 1)), group(p * SCALE.chars),
+                    group(p * (SCALE.blocks - 1)), group(p * SCALE.chars)];
+      posEls.forEach(function (el, i) { if (el) el.textContent = values[i]; });
+    }
+
+    function paintScaleNums() {
+      if (!scaleNums) return;
+      var lang = currentLang() === "en" ? 1 : 0;
+      Object.keys(SCALE.modes[scaleMode]).forEach(function (key) {
+        var el = scaleNums.querySelector('[data-scale="' + key + '"]');
+        if (el) el.textContent = SCALE.modes[scaleMode][key][lang];
+      });
+    }
+
+    scaleModeBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        scaleMode = btn.getAttribute("data-mode");
+        scaleStrip.classList.toggle("is-before", scaleMode === "before");
+        scaleModeBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+        paintScale();
+        paintScaleNums();
+      });
+    });
+    scaleRange.addEventListener("input", paintScale);
+    langListeners.push(paintScaleNums);
+    paintScale();
+    paintScaleNums();
+  }
 })();

@@ -258,8 +258,9 @@ html[data-lang="en"] .zh { display: none !important; }
 }
 /* long unbreakable tokens (file names, shell lines) must never widen a track */
 .section > *, .bento > *, .dl > *, .dl-panels > *, .dl-build > *, .hybrid-grid > *,
-.render-grid > *, .perf-grid > *, .stack > *, .keys > *, .stats > *, .bars > * { min-width: 0; }
-.file-list code, .chip-row li, .mod-row li, .demo-hint { overflow-wrap: anywhere; }
+.render-grid > *, .perf-grid > *, .stack > *, .keys > *, .stats > *, .bars > *,
+.scale > *, .scale-body > *, .scale-nums > *, .perf-extra > *, .diagram-stage > * { min-width: 0; }
+.file-list code, .chip-row li, .mod-row li, .demo-hint, .strip-text, .scale-note { overflow-wrap: anywhere; }
 .section { padding-block: var(--s-32); border-top: 1px solid var(--hair); }
 .section-head { max-width: 78ch; margin-bottom: var(--s-12); }
 .kicker {
@@ -692,6 +693,127 @@ code {
 .perf p { font-size: var(--fs-small); color: var(--ink-2); }
 .perf:hover { border-color: color-mix(in oklab, var(--site-accent) 34%, var(--site-border)); }
 
+/* ---------- 10-million-character scale demo ---------- */
+.scale {
+  position: relative; margin-bottom: var(--s-12); padding: var(--s-8);
+  border-radius: var(--r-lg); border: 1px solid var(--hair);
+  background: linear-gradient(160deg, color-mix(in oklab, var(--site-accent) 8%, var(--site-surface)), color-mix(in oklab, var(--site-surface) 86%, transparent));
+  backdrop-filter: blur(10px);
+}
+.scale-title { margin-bottom: var(--s-6); font-size: calc(21px * var(--site-type)); }
+.scale-body { display: grid; gap: var(--s-6); }
+.strip-text { max-width: 82ch; font-size: var(--fs-small); color: var(--ink-2); }
+
+.scale-mode {
+  display: inline-flex; gap: 4px; padding: 4px; width: max-content;
+  border-radius: 999px; border: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--site-bg) 45%, transparent);
+}
+.scale-mode button {
+  padding: var(--s-2) var(--s-4); border: 0; border-radius: 999px;
+  font: inherit; font-size: var(--fs-small); white-space: nowrap; cursor: pointer;
+  color: var(--site-muted);
+  transition: color var(--t-fast) ease, background var(--t-fast) ease;
+}
+.scale-mode button[aria-pressed="true"] { color: var(--site-on-accent); background: var(--site-accent); }
+.scale-mode button:hover:not([aria-pressed="true"]) { color: var(--site-fg); }
+
+.scale-strip {
+  position: relative; height: calc(56px * var(--site-space)); overflow: hidden;
+  border-radius: var(--r-md); border: 1px solid var(--site-border);
+  background: color-mix(in oklab, var(--site-bg) 70%, var(--site-surface));
+}
+.strip-ticks {
+  position: absolute; inset: 0; opacity: 0.5;
+  background-image: repeating-linear-gradient(90deg,
+    color-mix(in oklab, var(--site-fg) 11%, transparent) 0 1px, transparent 1px 14px);
+}
+.strip-window {
+  position: absolute; top: 0; bottom: 0; left: var(--win-start, 16%); width: var(--win-w, 4.6%);
+  border-inline: 2px solid var(--site-accent);
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--site-accent) 28%, transparent),
+    color-mix(in oklab, var(--violet) 16%, transparent));
+  box-shadow: 0 0 34px -8px color-mix(in oklab, var(--site-accent) 70%, transparent);
+  transition: left var(--t-mid) cubic-bezier(0.22, 1, 0.36, 1), width var(--t-mid) cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scale-strip.is-before .strip-window {
+  border-inline-color: var(--rose); background: color-mix(in oklab, var(--rose) 20%, transparent);
+  box-shadow: none;
+}
+
+.scale-slider { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--s-4); align-items: center; }
+.scale-slider-text { font-size: var(--fs-small); color: var(--site-muted); white-space: nowrap; }
+.scale-slider output { min-width: 6ch; text-align: end; font-size: var(--fs-meta); color: var(--site-fg); }
+.scale-slider input[type="range"] {
+  width: 100%; height: 26px; appearance: none; -webkit-appearance: none;
+  background: transparent; cursor: ew-resize;
+}
+.scale-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px; border-radius: 999px; border: 1px solid var(--hair);
+  background: linear-gradient(90deg, color-mix(in oklab, var(--site-accent) 60%, transparent), color-mix(in oklab, var(--violet) 50%, transparent));
+}
+.scale-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px;
+  border-radius: 50%; background: var(--site-fg); border: 3px solid var(--site-accent);
+  box-shadow: 0 4px 14px -4px color-mix(in oklab, var(--site-accent) 75%, transparent);
+}
+.scale-slider input[type="range"]::-moz-range-track {
+  height: 6px; border-radius: 999px; border: 1px solid var(--hair);
+  background: linear-gradient(90deg, color-mix(in oklab, var(--site-accent) 60%, transparent), color-mix(in oklab, var(--violet) 50%, transparent));
+}
+.scale-slider input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--site-fg); border: 3px solid var(--site-accent);
+}
+.scale-slider input[type="range"]:focus-visible { outline: 2px solid var(--site-accent); outline-offset: 4px; border-radius: 999px; }
+
+.scale-nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--s-4); }
+.scale-nums li {
+  min-width: 0; padding: var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--hair); background: color-mix(in oklab, var(--site-bg) 45%, transparent);
+}
+.scale-nums b { display: block; font-weight: 600; font-size: calc(18px * var(--site-type)); color: var(--site-fg); overflow-wrap: anywhere; }
+.scale-nums span { display: block; margin-top: 4px; font-size: var(--fs-meta); color: var(--site-muted); }
+.scale-note { font-size: var(--fs-meta); color: var(--ink-2); }
+.scale-note b { color: var(--site-accent); font-weight: 600; }
+
+/* ---------- measured before / after table ---------- */
+.bench { min-width: 620px; width: 100%; border-collapse: collapse; font-size: var(--fs-body); }
+.bench th, .bench td {
+  padding: var(--s-4) var(--s-6); text-align: start; vertical-align: top;
+  border-bottom: 1px solid var(--hair);
+}
+.bench thead th {
+  font-family: var(--mono); font-size: var(--fs-meta); letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--site-muted); background: color-mix(in oklab, var(--elev) 76%, transparent);
+}
+.bench tbody th { width: 26%; font-weight: 600; color: var(--site-fg); }
+.bench tbody tr:last-child th, .bench tbody tr:last-child td { border-bottom: 0; }
+.bench td { color: var(--site-muted); }
+.bench td.mono { font-family: var(--mono); font-size: var(--fs-small); }
+.bench .col-markd {
+  color: var(--site-fg);
+  background: linear-gradient(90deg, color-mix(in oklab, var(--site-accent) 11%, transparent), transparent);
+  border-inline: 1px solid color-mix(in oklab, var(--site-accent) 22%, transparent);
+}
+.bench .col-markd b { color: var(--site-accent); font-weight: 650; }
+.bench tbody tr { transition: background var(--t-fast) ease; }
+.bench tbody tr:hover { background: color-mix(in oklab, var(--site-fg) 3%, transparent); }
+.bench .sub, .table-wrap .sub {
+  display: block; margin-top: 2px; font-family: var(--site-font);
+  font-size: var(--fs-meta); color: var(--site-muted);
+}
+
+.perf-extra { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: var(--s-6); margin-top: var(--s-6); }
+.extra-card {
+  min-width: 0; padding: var(--s-6); border-radius: var(--r-lg);
+  border: 1px solid var(--hair); background: color-mix(in oklab, var(--site-surface) 68%, transparent);
+}
+.extra-card h3 { margin-bottom: var(--s-3); font-size: calc(17px * var(--site-type)); }
+.extra-card p { font-size: var(--fs-small); color: var(--ink-2); }
+.extra-repro .code { margin-top: var(--s-4); }
+
 /* ---------- architecture ---------- */
 .stack { display: grid; gap: var(--s-3); max-width: 760px; }
 .layer {
@@ -845,6 +967,9 @@ code {
   .bar-track { grid-column: 1 / -1; order: 3; }
   .hero-title { min-height: 0; }
   .frame-theme { display: none; }
+  .scale { padding: var(--s-6); }
+  .scale-slider { grid-template-columns: minmax(0, 1fr) auto; }
+  .scale-slider-text { grid-column: 1 / -1; }
   .pipeline li { grid-template-columns: auto 1fr; }
   .pipeline li span:not(.mono-step) { grid-column: 2; }
 }

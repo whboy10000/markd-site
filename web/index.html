@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Markd — 纯 Rust 从零实现的桌面 Markdown 编辑器 / A desktop Markdown editor built from scratch in Rust</title>
-<meta name="description" content="Markd 是一个纯 Rust + egui 从零实现的桌面 Markdown 编辑器：不套 Web 内核、不用 Electron/Tauri，自研 AST 无损往返、公式与 Mermaid 全自绘、50 万字长文流畅编辑。支持 macOS / Windows / Linux。">
+<meta name="description" content="Markd 是一个纯 Rust + egui 从零实现的桌面 Markdown 编辑器：不套 Web 内核、不用 Electron/Tauri，自研 AST 无损往返、公式与 Mermaid 全自绘、1000 万字长文每帧成本与文档总长无关。支持 macOS / Windows / Linux。">
 <meta property="og:title" content="Markd — 每一个像素，都由 Rust 亲手绘制">
 <meta property="og:description" content="纯 Rust + egui 从零实现的桌面 Markdown 编辑器。无 Web 内核，自研 AST，公式零栅格化，25+ Mermaid 图类型全自绘。">
 <meta property="og:type" content="website">
@@ -80,7 +80,7 @@
       </div>
 
       <ul class="hero-meta">
-        <li><span class="zh">单文件可执行 · 几 MB</span><span class="en">Single-file binary · a few MB</span></li>
+        <li><span class="zh">单文件可执行 · 安装包 8–19 MB</span><span class="en">Single-file binary · 8–19 MB installer</span></li>
         <li><span class="zh">macOS / Windows / Linux</span><span class="en">macOS / Windows / Linux</span></li>
         <li><span class="zh">PolyForm 非商业许可</span><span class="en">PolyForm Noncommercial</span></li>
       </ul>
@@ -101,7 +101,7 @@
         </div>
         <p class="callout callout-1"><span class="zh">自研 AST · 源码无损往返</span><span class="en">In-house AST · lossless round-trip</span></p>
         <p class="callout callout-2"><span class="zh">公式零栅格化 · 直出 GPU</span><span class="en">Zero-rasterized math · straight to GPU</span></p>
-        <p class="callout callout-3"><span class="zh">50 万字 · 打开即写</span><span class="en">500k characters · open and write</span></p>
+        <p class="callout callout-3"><span class="zh">1000 万字 · 静置帧 1.5 ms</span><span class="en">10M characters · 1.5 ms idle frame</span></p>
       </div>
     </div>
   </section>
@@ -110,11 +110,11 @@
   <section class="statband" aria-label="Key numbers / 关键数字">
     <ul class="stats">
       <li><b class="stat-num" data-count="3" data-suffix="+">0</b><span class="zh">平台 · macOS / Windows / Linux</span><span class="en">Platforms · macOS / Windows / Linux</span></li>
-      <li><b class="stat-num" data-count="50" data-suffix="万字" data-count-en="500" data-suffix-en="k">0</b><span class="zh">单文件流畅编辑体量</span><span class="en">characters per file, smoothly</span></li>
+      <li><b class="stat-num" data-count="1000" data-suffix="万字" data-count-en="10" data-suffix-en="M chars">0</b><span class="zh">单文件流畅编辑体量</span><span class="en">characters per file, smoothly</span></li>
       <li><b class="stat-num" data-count="25" data-suffix="+">0</b><span class="zh">自绘 Mermaid 图类型</span><span class="en">self-rendered diagram types</span></li>
       <li><b class="stat-num" data-count="220" data-suffix="+">0</b><span class="zh">编译期嵌入 SVG 图标</span><span class="en">compile-time embedded icons</span></li>
       <li><b class="stat-num" data-count="30" data-suffix="+">0</b><span class="zh">条快捷键体系</span><span class="en">keyboard shortcuts</span></li>
-      <li><b class="stat-num" data-count="0" data-prefix="~" data-suffix="µs" data-raw="~3µs">~3µs</b><span class="zh">单块增量重解析</span><span class="en">block-level incremental reparse</span></li>
+      <li><b class="stat-num" data-count="0" data-prefix="~" data-suffix="µs" data-raw="~5µs">~5µs</b><span class="zh">单块增量重解析（10 万字文档）</span><span class="en">block-level incremental reparse</span></li>
     </ul>
   </section>
 
@@ -182,7 +182,7 @@
         <tbody>
           <tr>
             <th scope="row"><span class="zh">启动体积</span><span class="en">Binary size</span></th>
-            <td class="col-markd"><span class="zh">单文件可执行，几 MB</span><span class="en">Single-file executable, a few MB</span></td>
+            <td class="col-markd"><span class="zh">单文件可执行，安装包 8–19 MB</span><span class="en">Single-file executable, 8–19 MB installers</span></td>
             <td><span class="zh">动辄 100 MB+，捆绑 Chromium</span><span class="en">Easily 100 MB+, bundles Chromium</span></td>
           </tr>
           <tr>
@@ -197,7 +197,7 @@
           </tr>
           <tr>
             <th scope="row"><span class="zh">长文档</span><span class="en">Long documents</span></th>
-            <td class="col-markd"><span class="zh">50 万字单文件流畅编辑</span><span class="en">500k-character files stay smooth</span></td>
+            <td class="col-markd"><span class="zh">1000 万字单文件流畅编辑，静置帧 1.5 ms</span><span class="en">10-million-character files stay smooth — 1.5 ms idle frames</span></td>
             <td><span class="zh">大文档滚动 / 输入常见卡顿</span><span class="en">Scrolling and typing stutter on big files</span></td>
           </tr>
           <tr>
@@ -243,6 +243,12 @@
         <h3><span class="zh">写作模式</span><span class="en">Writing modes</span></h3>
         <p class="zh">纯文本源码模式、专注模式 <span class="mono">F8</span> 只留亮当前段落、打字机模式 <span class="mono">F9</span> 把编辑行锁在视口中央、可配置间隔的自动保存。</p>
         <p class="en">Raw source mode, focus mode <span class="mono">F8</span> that dims everything but the current paragraph, typewriter mode <span class="mono">F9</span> that keeps your line centered, and configurable autosave.</p>
+      </article>
+
+      <article class="card">
+        <h3><span class="zh">图片、代码组与多标签</span><span class="en">Images, code groups, multiple tabs</span></h3>
+        <p class="zh">截图直接粘贴即落盘并插入链接，图片拖右下角缩放；一键上传到 Gitee 图床（单图 20 MB 上限，路径模板支持 <span class="mono">{year}/{month}/{day}</span>），远程图片异步下载进纹理缓存，失败显示占位框。代码组是多语言 Tab 的容器，代码块可折叠并按文档绝对路径记住状态；每个文件一个标签，中键关闭，切走再回来光标与选中状态各归各的。</p>
+        <p class="en">Paste a screenshot and it lands on disk with the link inserted; drag an image's corner to resize it. One click uploads to a Gitee image host (20 MB per image, path templates like <span class="mono">{year}/{month}/{day}</span>), and remote images download asynchronously into the texture cache with a placeholder on failure. Code groups are multi-language tab containers, code blocks fold and remember their state per file path, and every file gets its own tab — middle-click closes it, and each tab keeps its own cursor and selection.</p>
       </article>
 
       <article class="card">
@@ -343,7 +349,7 @@
           <svg viewBox="0 0 620 210" role="img" aria-label="flowchart 示意：解析、增量写回、渲染三个阶段">
             <g class="d-node"><rect x="14" y="78" width="140" height="48" rx="10"/><text x="84" y="103">source.md</text></g>
             <g class="d-node"><rect x="228" y="18" width="164" height="48" rx="10"/><text x="310" y="43">parse → AST</text></g>
-            <g class="d-node"><rect x="228" y="142" width="164" height="48" rx="10"/><text x="310" y="167">incremental ~3µs</text></g>
+            <g class="d-node"><rect x="228" y="142" width="164" height="48" rx="10"/><text x="310" y="167">incremental ~5µs</text></g>
             <g class="d-node alt"><rect x="470" y="78" width="136" height="48" rx="10"/><text x="538" y="103">Mesh → GPU</text></g>
             <g class="d-edge">
               <path d="M154 102h48v-59h26"/><path class="tip" d="M228 43l-9-5v10Z"/>
@@ -414,48 +420,137 @@
     <div class="section-head">
       <p class="kicker"><span class="zh">性能</span><span class="en">Performance</span></p>
       <h2><span class="zh">每帧成本与文档总长无关。</span><span class="en">Frame cost is independent of document length.</span></h2>
-      <p class="section-lead zh">实测基线：10 万字 / 989 块。全文解析约 11 ms（只在打开时发生一次），单块编辑增量写回约 3 µs，编辑器单帧约 9.5 ms、最差约 13 ms —— 远低于 60 fps 预算。50 万字文档约为该基线 5 倍体量，打开与编辑同样全程流畅。</p>
-      <p class="section-lead en">Measured baseline, 100k characters across 989 blocks: full parse about 11 ms (once, on open), incremental write-back of an edited block about 3 µs, an editor frame about 9.5 ms and roughly 13 ms in the worst case — far under the 60 fps budget. A 500k-character file is about five times that load and stays just as smooth.</p>
+      <p class="section-lead zh">实测口径：10,000,045 字符 / 17.6 MB / 241,046 个块 —— 标题、段落、表格、代码块、公式与 Mermaid 混排。同一份语料、同一台机器（macOS x86_64，release 构建，视口宽 1280）上前后各测一遍。下面这张标尺可以直接拖：把 17.6 MB 的文档滚到任意位置，每帧排版的工作量都不变。</p>
+      <p class="section-lead en">The corpus: 10,000,045 characters — 17.6&nbsp;MB, 241,046 blocks of mixed headings, paragraphs, tables, code, math and Mermaid — measured before and after on the same file on the same machine (macOS x86_64, release build, 1280-wide viewport). Drag the scale below: scroll that 17.6&nbsp;MB file anywhere you like, and the work per frame stays the same.</p>
     </div>
 
-    <div class="bars" role="img" aria-label="编辑器单帧耗时约 9.5 毫秒，最差约 13 毫秒，60fps 预算为 16.7 毫秒">
-      <div class="bar-row"><span class="bar-label zh">单帧 · 典型</span><span class="bar-label en">Frame · typical</span><span class="bar-track"><i style="--w:57%"></i></span><span class="bar-val mono">~9.5 ms</span></div>
-      <div class="bar-row"><span class="bar-label zh">单帧 · 最差</span><span class="bar-label en">Frame · worst</span><span class="bar-track"><i style="--w:78%"></i></span><span class="bar-val mono">~13 ms</span></div>
+    <div class="scale" data-reveal>
+      <h3 class="scale-title"><span class="zh">千万字标尺：在同一份文档里滚到任意位置</span><span class="en">The 10-million scale: scroll anywhere in one document</span></h3>
+      <div class="scale-body">
+        <div class="scale-mode" role="group" aria-label="对比模式 / Compare mode">
+          <button type="button" data-mode="now" aria-pressed="true"><span class="zh">现在</span><span class="en">Now</span></button>
+          <button type="button" data-mode="before" aria-pressed="false"><span class="zh">优化前</span><span class="en">Before</span></button>
+        </div>
+
+        <div class="scale-strip" role="img" aria-labelledby="scaleStripText">
+          <span class="strip-ticks" aria-hidden="true"></span>
+          <span class="strip-window" id="scaleWindow" aria-hidden="true"></span>
+        </div>
+        <p class="strip-text" id="scaleStripText"><span class="zh">整条是 1000 万字语料的 241,046 个块。拖动滑块在文档里滚动：高亮窗口跟着移动，右侧数字一个都不变 —— 因为一帧只排版视口内的块，外加上下各 24 块余量（<span class="mono">MARGIN_BLOCKS</span>）。窗口宽度只是示意，它由视口高度决定，与整条长度无关；切到「优化前」，同一帧要排版整条。</span><span class="en">The full bar is the 241,046 blocks of the 10M-character corpus. Drag to scroll through it: the highlighted window moves and none of the numbers change, because one frame lays out only the blocks in view plus a 24-block margin above and below (<span class="mono">MARGIN_BLOCKS</span>). The window's width is illustrative — the viewport height decides it, never the length of the file. Switch to “before” and the same frame lays out the entire bar.</span></p>
+
+        <label class="scale-slider" for="scalePos">
+          <span class="scale-slider-text"><span class="zh">文档内滚动位置</span><span class="en">Scroll position</span></span>
+          <input id="scalePos" type="range" min="0" max="1000" step="1" value="180" aria-describedby="scalePosOut scaleBlock">
+          <output class="mono" id="scalePosOut">18.0%</output>
+        </label>
+
+        <ul class="scale-nums" id="scaleNums">
+          <li><b class="mono" data-scale="laid">视口内 + 上下各 24 块</b><span class="zh">本帧排版块数</span><span class="en">blocks laid out per frame</span></li>
+          <li><b class="mono" data-scale="shapes">182</b><span class="zh">每帧绘制图元</span><span class="en">shapes drawn per frame</span></li>
+          <li><b class="mono" data-scale="idle">1.5 ms</b><span class="zh">静置一帧</span><span class="en">idle frame</span></li>
+          <li><b class="mono" data-scale="scroll">5.5 ms</b><span class="zh">滚动一帧</span><span class="en">scroll frame</span></li>
+          <li><b class="mono" data-scale="rss">271 MB</b><span class="zh">常驻内存</span><span class="en">resident memory</span></li>
+        </ul>
+        <p class="scale-note mono"><span class="zh">当前位置：第 <b id="scaleBlock">43,388</b> 块 · 约 <b id="scaleChars">1,800,008</b> 字符</span><span class="en">At block <b id="scaleBlockEn">43,388</b> of 241,046 · roughly <b id="scaleCharsEn">1,800,008</b> characters in</span></p>
+      </div>
+    </div>
+
+    <div class="bars" role="img" aria-label="千万字文档实测单帧耗时：静置 1.5 毫秒、敲字 2.7 毫秒、滚动 5.5 毫秒、滚动最差 9.0 毫秒，60fps 预算 16.7 毫秒">
+      <div class="bar-row"><span class="bar-label zh">静置一帧</span><span class="bar-label en">Idle frame</span><span class="bar-track"><i style="--w:9%"></i></span><span class="bar-val mono">1.5 ms</span></div>
+      <div class="bar-row"><span class="bar-label zh">敲字一帧</span><span class="bar-label en">Typing frame</span><span class="bar-track"><i style="--w:16%"></i></span><span class="bar-val mono">2.7 ms</span></div>
+      <div class="bar-row"><span class="bar-label zh">滚动一帧</span><span class="bar-label en">Scroll frame</span><span class="bar-track"><i style="--w:33%"></i></span><span class="bar-val mono">5.5 ms</span></div>
+      <div class="bar-row"><span class="bar-label zh">滚动 · 最差</span><span class="bar-label en">Scroll · worst</span><span class="bar-track"><i style="--w:54%"></i></span><span class="bar-val mono">9.0 ms</span></div>
       <div class="bar-row budget"><span class="bar-label zh">60 fps 预算</span><span class="bar-label en">60 fps budget</span><span class="bar-track"><i style="--w:100%"></i></span><span class="bar-val mono">16.7 ms</span></div>
-      <div class="bar-row"><span class="bar-label zh">单块增量写回</span><span class="bar-label en">Block write-back</span><span class="bar-track"><i class="tiny" style="--w:2%"></i></span><span class="bar-val mono">~3 µs</span></div>
     </div>
 
-    <div class="perf-grid">
+    <div class="table-wrap" data-reveal>
+      <table class="bench">
+        <caption class="sr-only"><span class="zh">1000 万字语料上优化前后实测对比</span><span class="en">Before and after on the 10-million-character corpus</span></caption>
+        <thead>
+          <tr>
+            <th scope="col"><span class="zh">场景（1000 万字）</span><span class="en">Scenario (10M chars)</span></th>
+            <th scope="col"><span class="zh">优化前</span><span class="en">Before</span></th>
+            <th scope="col" class="col-markd"><span class="zh">现在</span><span class="en">Now</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><span class="zh">冷启动首帧</span><span class="en">First frame on open</span></th><td class="mono">13,862.9 ms</td><td class="col-markd mono"><b>34.8 ms</b></td></tr>
+          <tr><th scope="row"><span class="zh">静置一帧</span><span class="en">Idle frame</span></th><td class="mono">5,703.8 ms<span class="sub">（最差 9,042.6）</span></td><td class="col-markd mono"><b>1.5 ms</b><span class="sub">（最差 4.0）</span></td></tr>
+          <tr><th scope="row"><span class="zh">滚动一帧</span><span class="en">Scroll frame</span></th><td class="mono">3,864.4 ms<span class="sub">（最差 8,446.7）</span></td><td class="col-markd mono"><b>5.5 ms</b><span class="sub">（最差 9.0）</span></td></tr>
+          <tr><th scope="row"><span class="zh">敲字一帧</span><span class="en">Typing frame</span></th><td class="mono">3,471.1 ms<span class="sub">（最差 3,583.0）</span></td><td class="col-markd mono"><b>2.7 ms</b><span class="sub">（最差 8.3）</span></td></tr>
+          <tr><th scope="row"><span class="zh">每帧绘制图元</span><span class="en">Shapes per frame</span></th><td class="mono">754,878</td><td class="col-markd mono"><b>182</b></td></tr>
+          <tr><th scope="row"><span class="zh">常驻内存</span><span class="en">Resident memory</span></th><td class="mono">3,152 MB</td><td class="col-markd mono"><b>271 MB</b></td></tr>
+          <tr><th scope="row"><span class="zh">打开流水线</span><span class="en">Open pipeline</span></th><td class="mono"><span class="sub">读盘 44 + 解析 1,246 + 大纲 9.2 + 统计 290 ms</span></td><td class="col-markd mono"><span class="sub">读盘 44 + 解析 <b>553</b> + 大纲 4.2 + 统计 <b>0.5</b> ms</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="perf-grid" data-reveal>
+      <article class="perf">
+        <h3><span class="zh">块排版表 + 视口裁剪</span><span class="en">A layout table, then viewport culling</span></h3>
+        <p class="zh">每块的高度与顶边前缀和存在排版表里，二分定位落在视口内的块，一帧只排版它们，外加上下各 <span class="mono">24</span> 块余量吸收滚轮惯性。高度用实测值自我收敛：没测过的块先用兜底值占位，一被排版就换成真实值，高度变化超过 <span class="mono">0.5 px</span> 才标脏重算前缀和 —— 早期「只有估算高度 + 占位」的虚拟滚动会让滚动条反复回弹，那套做法已被推翻。</p>
+        <p class="en">Block heights and their top-edge prefix sums live in a layout table; a binary search finds the blocks inside the viewport, the frame lays out only those, plus a 24-block margin above and below to absorb wheel inertia. Heights converge on measurement: an unmeasured block starts on a fallback and is replaced by its real height as soon as it is laid out, and the prefix sums are only recomputed when a height moves by more than 0.5 px. The earlier virtual scroller — estimated heights, placeholders, never measured — made the scrollbar rebound and has been retired.</p>
+      </article>
       <article class="perf">
         <h3><span class="zh">解析只做一次，编辑走增量</span><span class="en">Parse once, edit incrementally</span></h3>
-        <p class="zh">打开时全文解析一次；之后每次按键只重新解析当前编辑的那一块，绝不全文重解析。只有粘贴空行这类把单块拆成多块的情况才回退一次全文解析。</p>
-        <p class="en">The document is parsed once on open; every keystroke afterwards only reparses the block being edited, never the whole file. Only edits like a pasted blank line that splits one block into several fall back to a full parse.</p>
+        <p class="zh">打开时全文解析一次：1000 万字 <span class="mono">553 ms</span>，约 1,800 万字符 / 秒。之后每次按键只重新解析当前编辑的那一块 —— 10 万字文档里单块写回从 26 ms 降到约 <span class="mono">5 µs</span>。只有粘贴空行这类把一块拆成多块的情况才回退一次全文解析。行内标记解析再按块分片并行。</p>
+        <p class="en">One full parse on open: 553 ms for 10M characters, roughly 18 million characters per second. Every keystroke afterwards reparses only the block being edited — on a 100k-character file that write-back dropped from 26 ms to about 5 µs. Only edits that split one block into several, such as a pasted blank line, fall back to a full parse. Inline markup is parsed in block-sharded parallel.</p>
       </article>
       <article class="perf">
-        <h3><span class="zh">不用虚拟滚动</span><span class="en">No virtual scrolling</span></h3>
-        <p class="zh">试过「估算高度 + 占位」，但估算与实测的差异会让滚动条反复回弹。Markd 渲染全部块，把单块渲染做到足够快 —— 10 万字 / 989 块单帧约 9.5 ms。</p>
-        <p class="en">Estimated-height placeholders were tried, but the gap between estimate and measurement makes the scrollbar rebound. Markd renders every block and simply makes each one fast enough.</p>
+        <h3><span class="zh">撤销栈存差量，不存整篇</span><span class="en">Undo stores deltas, not documents</span></h3>
+        <p class="zh">编辑记录以「块序号 + 旧文本 + 新文本」的拼接段入栈，只有整篇替换才退化成全量快照：1000 万字 200 条记录的栈占用从 <span class="mono">3,300 MB</span> 降到 <span class="mono">0.09 MB</span>，全量撤销 / 重做从 1,483 / 1,497 ms 降到 0 ms 量级。1M 字连做 200 条记录，常驻内存从「29 → 388 MB 线性上涨」压平成 <span class="mono">26 MB</span> 不再增长，撤销后无损还原。快照仍按 450 ms 节流、上限 200 组。</p>
+        <p class="en">Each edit goes on the stack as a splice of «block index, old text, new text», degrading to a full snapshot only when the whole document really is replaced: 200 records on a 10M-character file fell from 3,300 MB to 0.09 MB, and a full undo / redo from 1,483 / 1,497 ms to the 0 ms range. Doing 200 records on a 1M-character file flattens resident memory from a linear 29 → 388 MB climb to a flat 26 MB, and the restore is lossless. The 450 ms throttle and 200-record cap are unchanged.</p>
       </article>
       <article class="perf">
-        <h3><span class="zh">显式宽度排版</span><span class="en">Explicit-width layout</span></h3>
-        <p class="zh">所有文本块都按固定可用宽度预排版成 galley 再交给 Label，避免横向布局里 Label 退化成无限宽导致长段落不换行、每帧重排。</p>
-        <p class="en">Every text block is pre-laid into a galley at the fixed available width before becoming a Label, so it never degrades to infinite width and re-lays long paragraphs each frame.</p>
+        <h3><span class="zh">统计按块增量</span><span class="en">Statistics accumulate per block</span></h3>
+        <p class="zh">字数、段落、阅读时长由每块的统计量求和，改一块只重算一块：1000 万字 <span class="mono">290 ms → 0.5 ms</span>，并配了一条与全量扫描逐字段对照的等价性测试 —— 增量路径和全量路径必须给出同一个数。</p>
+        <p class="en">Character, paragraph and reading-time counts are sums of per-block statistics, so editing one block recomputes one block: 290 ms → 0.5 ms on 10M characters, guarded by an equivalence test that runs the incremental path against a full scan and compares every field.</p>
       </article>
       <article class="perf">
-        <h3><span class="zh">撤销栈节流</span><span class="en">Throttled undo stack</span></h3>
-        <p class="zh">快照按 450 ms 节流记录、上限 200 条，连续输入既不会打爆撤销栈，也不会每键复制一次全文。</p>
-        <p class="en">Snapshots are recorded on a 450 ms throttle with a 200-entry cap, so continuous typing neither floods the stack nor clones the whole file per keystroke.</p>
+        <h3><span class="zh">搜索按块并行</span><span class="en">Search fans out across blocks</span></h3>
+        <p class="zh">命中扫描按块分片，线程数取 <span class="mono">min(可用核数, 8)</span>：1000 万字全文扫描 <span class="mono">93.9 → 20.9 ms</span>，1M 字 9.9 → 2.6 ms。结果与串行逐字节一致，包括命中上限。</p>
+        <p class="en">The match scan is sharded by block across <span class="mono">min(cores, 8)</span> threads: a full scan of 10M characters goes 93.9 → 20.9 ms, and 9.9 → 2.6 ms at 1M. Results are byte-identical to the serial path, hit cap included.</p>
       </article>
       <article class="perf">
-        <h3><span class="zh">懒加载的工作区</span><span class="en">Lazy workspace</span></h3>
-        <p class="zh">文件树扫描有 4000 文件 / 6 万条目上限兜底；快速打开与双链关系图只在面板打开时才后台扫描，绝不在启动阶段同步扫盘。</p>
-        <p class="en">Tree scanning is capped at 4,000 files and 60,000 entries; quick-open and the link graph only scan in the background once their panel opens, never synchronously at launch.</p>
+        <h3><span class="zh">只算该算的那部分</span><span class="en">Only the visible part gets computed</span></h3>
+        <p class="zh">语法高亮只作用在可见块上，代码块暖帧 <span class="mono">63.0 → 1.4 ms</span>（10 万字语料）。源码模式按文档修订号缓存整篇源码串、行首表、字符数与最长行宽度，只在文档真改过之后重算，行号也只画视口内那几十行：1000 万字源码模式一帧 <span class="mono">113 → 15.7 ms</span>。</p>
+        <p class="en">Syntax highlighting runs on visible blocks only, taking a code block's warm frame from 63.0 to 1.4 ms on the 100k corpus. Source mode caches the whole-document string, line-start table, character count and longest-line width behind the document's revision number and rebuilds them only when the text actually changed, and line numbers are drawn only for the lines in view: a source-mode frame at 10M characters went 113 → 15.7 ms.</p>
       </article>
       <article class="perf">
-        <h3><span class="zh">开发构建也够快</span><span class="en">Debug builds are fast too</span></h3>
-        <p class="zh"><span class="mono">[profile.dev.package."*"] opt-level = 3</span> 只对依赖全量优化，<span class="mono">cargo run</span> 直接可日用，自己代码仍可断点调试。</p>
-        <p class="en"><span class="mono">[profile.dev.package."*"] opt-level = 3</span> optimizes only the dependencies, so <span class="mono">cargo run</span> is usable daily while your own code stays breakpoint-debuggable.</p>
+        <h3><span class="zh">侧栏虚拟列表</span><span class="en">A virtualized sidebar</span></h3>
+        <p class="zh">双链目标索引改成虚拟列表，1000 万字文档侧栏重建一帧从 <span class="mono">307 ms / 254 MB</span> 降到 <span class="mono">0.25 ms / 0.2 MB</span>。</p>
+        <p class="en">The backlink target index became a virtual list, dropping a sidebar frame at 10M characters from 307 ms / 254 MB to 0.25 ms / 0.2 MB.</p>
       </article>
+      <article class="perf">
+        <h3><span class="zh">与规模无关的三条照旧</span><span class="en">Three things that were already scale-free</span></h3>
+        <p class="zh">所有文本块按显式宽度预排版成 galley 再交给 <span class="mono">Label</span>，避免横向布局里退化成无限宽而每帧重排；侧栏图标编译期嵌入、只栅格化一次进纹理缓存；公式走 RaTeX 显示列表零栅格化。这三条本轮没动，也不需要动。</p>
+        <p class="en">Every text block is pre-laid into a galley at an explicit width before becoming a <span class="mono">Label</span>, so it never degrades to infinite width and re-lays each frame; sidebar icons are embedded at compile time and rasterized once into a texture cache; math goes through RaTeX display lists with zero rasterization. None of the three needed touching this round.</p>
+      </article>
+      <article class="perf">
+        <h3><span class="zh">工作区懒加载，开发构建也够快</span><span class="en">Lazy workspace, and debug builds stay usable</span></h3>
+        <p class="zh">文件树扫描有 4000 文件 / 6 万条目上限兜底；快速打开与双链关系图只在面板打开时才后台扫描，启动阶段绝不同步扫盘。<span class="mono">[profile.dev.package."*"] opt-level = 3</span> 只对依赖全量优化，<span class="mono">cargo run</span> 直接可日用，自己的代码仍可断点调试。</p>
+        <p class="en">Tree scanning is capped at 4,000 files and 60,000 entries; quick-open and the link graph only scan in the background once their panel opens, never synchronously at launch. <span class="mono">[profile.dev.package."*"] opt-level = 3</span> optimizes just the dependencies, so <span class="mono">cargo run</span> is usable daily while your own code stays breakpoint-debuggable.</p>
+      </article>
+    </div>
+
+    <div class="perf-extra" data-reveal>
+      <div class="extra-card">
+        <h3><span class="zh">已知代价</span><span class="en">Known costs</span></h3>
+        <p class="zh">只在千万字量级才有感知的三项：源码模式冷首帧 <span class="mono">6.6 s</span>（egui 对整篇 17.6 MB 文本一次性排版，此后每帧 15.7 ms）、源码模式敲字约 <span class="mono">950 ms/键</span>（整篇重新解析）、HTML 导出 <span class="mono">1.9 s</span>。默认的混合模式不受这三项影响。</p>
+        <p class="en">Three costs you only feel at the 10M scale: a 6.6 s cold first frame in source mode (egui lays all 17.6 MB out at once, then 15.7 ms per frame), roughly 950 ms per keystroke in source mode (the whole file reparses), and a 1.9 s HTML export. The default Hybrid View is untouched by all three.</p>
+      </div>
+      <div class="extra-card">
+        <h3><span class="zh">中小体量参考</span><span class="en">At one-tenth the scale</span></h3>
+        <p class="zh">1M 字 / 24,420 块，同一套探针：打开流水线读盘 4.4 + 解析 <span class="mono">49.9</span> + 大纲 0.8 + 统计 0.1 ms；静置一帧 <span class="mono">1.2 ms</span>（最差 3.2）、滚动 4.0 ms、敲字 2.5 ms；常驻内存 137 MB；HTML 导出 189.9 ms；全文搜索并行 2.6 / 串行 9.9 ms。</p>
+        <p class="en">1M characters across 24,420 blocks, same probes: the open pipeline is 4.4 disk + 49.9 parse + 0.8 outline + 0.1 stats ms; an idle frame is 1.2 ms (3.2 worst), scroll 4.0, typing 2.5; 137 MB resident; HTML export 189.9 ms; full-text search 2.6 ms parallel against 9.9 serial.</p>
+      </div>
+      <div class="extra-card extra-repro">
+        <h3><span class="zh">怎么复现</span><span class="en">How to reproduce</span></h3>
+        <p class="zh">压测探针要显式打开，日常 <span class="mono">cargo test</span> 不会跑它：</p>
+        <p class="en">The stress probes are opt-in; a normal <span class="mono">cargo test</span> never runs them:</p>
+        <pre class="code"><code>MARKD_STRESS=1 MARKD_STRESS_TARGET=10000000 \
+  cargo test --release -p markd-ui stress -- --nocapture --test-threads=1</code></pre>
+      </div>
     </div>
   </section>
 
@@ -470,8 +565,8 @@
       <article class="layer"><div class="layer-name">markd<span class="zh"> · 入口</span><span class="en"> · binary</span></div><ul class="mod-row"><li>main</li><li>icons &amp; resources</li></ul></article>
       <div class="arrow" aria-hidden="true"><svg viewBox="0 0 16 28"><path d="M8 0v22m0 0-5-6m5 6 5-6"/></svg></div>
       <article class="layer"><div class="layer-name">markd-ui</div><ul class="mod-row"><li>app/</li><li>editor/</li><li>render/</li><li>terminal/</li><li>sidebar.rs</li><li>icons.rs</li></ul>
-        <p class="layer-note zh">应用状态与动作分发、Hybrid View 编辑器与选择 / 光标 / 撤销、块级渲染、PTY 终端、文件树与大纲与搜索、220+ 编译期 SVG 图标。</p>
-        <p class="layer-note en">App state and action dispatch, the Hybrid View editor with selection, cursor and undo, block rendering, the PTY terminal, the file tree / outline / search sidebar, and 220+ compile-time SVG icons.</p>
+        <p class="layer-note zh">应用状态与动作分发、Hybrid View 编辑器与选择 / 光标 / 撤销、块排版表与视口裁剪（<span class="mono">editor/layout.rs</span>）、块级渲染、PTY 终端、文件树与大纲与搜索、220+ 编译期 SVG 图标。</p>
+        <p class="layer-note en">App state and action dispatch, the Hybrid View editor with selection, cursor and undo, the block layout table with viewport culling (<span class="mono">editor/layout.rs</span>), block rendering, the PTY terminal, the file tree / outline / search sidebar, and 220+ compile-time SVG icons.</p>
       </article>
       <div class="arrow" aria-hidden="true"><svg viewBox="0 0 16 28"><path d="M8 0v22m0 0-5-6m5 6 5-6"/></svg></div>
       <article class="layer"><div class="layer-name">markd-platform</div><ul class="mod-row"><li>muda menus</li><li>font loading</li></ul>
@@ -480,16 +575,16 @@
       </article>
       <div class="arrow" aria-hidden="true"><svg viewBox="0 0 16 28"><path d="M8 0v22m0 0-5-6m5 6 5-6"/></svg></div>
       <article class="layer"><div class="layer-name">markd-core</div><ul class="mod-row"><li>ast.rs</li><li>document.rs</li><li>command.rs</li><li>export.rs</li><li>workspace.rs</li><li>image_host.rs</li><li>theme.rs</li></ul>
-        <p class="layer-note zh">自研 Markdown AST、文档模型与撤销栈、Command 抽象、HTML 导出、工作区扫描与双链索引、图床上传、主题与语法高亮配色。</p>
-        <p class="en">The in-house Markdown AST, document model and undo stack, the Command abstraction, HTML export, workspace scanning and link indexing, image-host uploads, and theme and syntax colors.</p>
+        <p class="layer-note zh">自研 Markdown AST、文档模型与差量撤销栈（按「块序号 + 旧文本 + 新文本」入栈）、Command 抽象、HTML 导出、工作区扫描与双链索引、图床上传、主题与语法高亮配色。</p>
+        <p class="en">The in-house Markdown AST, document model and delta undo stack (records of «block index, old text, new text»), the Command abstraction, HTML export, workspace scanning and link indexing, image-host uploads, and theme and syntax colors.</p>
       </article>
     </div>
 
     <div class="arch-side">
       <article class="side-item">
         <h3><span class="zh">配置与快照</span><span class="en">Config and snapshots</span></h3>
-        <p class="zh">全部落在用户目录 <span class="mono">~/.markd/</span>：<span class="mono">config.toml</span> 存主题、字体、自动保存，<span class="mono">fonts/</span> 优先加载 Regular 字重，<span class="mono">snapshots/</span> 是版本快照 —— 不写入项目目录。</p>
-        <p class="en">Everything lives under <span class="mono">~/.markd/</span>: <span class="mono">config.toml</span> for theme, fonts and autosave, <span class="mono">fonts/</span> preferring the Regular weight, and <span class="mono">snapshots/</span> for version history — nothing is written into your project folder.</p>
+        <p class="zh">全部落在用户目录 <span class="mono">~/.markd/</span>：<span class="mono">config.json</span> 存主题、字体、字号、自动保存与图床令牌，<span class="mono">folds.json</span> 记代码块折叠状态，<span class="mono">fonts/</span> 优先加载 Regular 字重，<span class="mono">snapshots/</span> 是版本快照 —— 不写入项目目录。</p>
+        <p class="en">Everything lives under <span class="mono">~/.markd/</span>: <span class="mono">config.json</span> for theme, fonts, size, autosave and image-host token, <span class="mono">folds.json</span> for code-block folding, <span class="mono">fonts/</span> preferring the Regular weight, and <span class="mono">snapshots/</span> for version history — nothing is written into your project folder.</p>
       </article>
       <article class="side-item">
         <h3><span class="zh">三平台自动构建</span><span class="en">Three-platform CI</span></h3>
@@ -549,9 +644,10 @@
         <div class="dl-panel active" data-os="mac">
           <h3><span class="zh">三种架构任选其一</span><span class="en">Pick your architecture</span></h3>
           <ul class="file-list">
-            <li><code>Markd-2026.11.19-macos-apple-silicon.dmg</code><span class="zh">Apple Silicon（M 系列）</span><span class="en">Apple Silicon (M-series)</span></li>
-            <li><code>Markd-2026.11.19-macos-intel.dmg</code><span class="zh">Intel 芯片</span><span class="en">Intel chips</span></li>
-            <li><code>Markd-2026.11.19-macos-universal.dmg</code><span class="zh">通用二进制，两种芯片都能跑</span><span class="en">Universal binary, runs on both</span></li>
+            <li><code>Markd-*-macos-apple-silicon.dmg</code><span class="zh">Apple Silicon（M 系列）</span><span class="en">Apple Silicon (M-series)</span></li>
+            <li><code>Markd-*-macos-intel.dmg</code><span class="zh">Intel 芯片</span><span class="en">Intel chips</span></li>
+            <li><code>Markd-*-macos-universal.dmg</code><span class="zh">通用二进制，两种芯片都能跑</span><span class="en">Universal binary, runs on both</span></li>
+            <li><code>Markd-*-macos.zip</code><span class="zh">不想装进 Applications 的压缩包</span><span class="en">Archive, if you would rather not install it</span></li>
           </ul>
           <p class="dl-note zh">打开后把 Markd 拖进 Applications 即可。首次运行若提示「无法验证开发者」，执行：</p>
           <p class="dl-note en">Open the DMG and drag Markd into Applications. If the first launch warns about an unverified developer, run:</p>
@@ -561,7 +657,7 @@
         <div class="dl-panel" data-os="win">
           <h3><span class="zh">安装向导</span><span class="en">Installer</span></h3>
           <ul class="file-list">
-            <li><code>Markd-2026.11.19-windows-setup.exe</code><span class="zh">NSIS 安装程序</span><span class="en">NSIS installer</span></li>
+            <li><code>Markd-*-windows-setup.exe</code><span class="zh">NSIS 安装程序</span><span class="en">NSIS installer</span></li>
           </ul>
           <p class="dl-note zh">安装向导里可选目录，会自动创建开始菜单与桌面快捷方式。</p>
           <p class="dl-note en">Choose an install directory in the wizard; start-menu and desktop shortcuts are created automatically.</p>
@@ -570,9 +666,9 @@
         <div class="dl-panel" data-os="linux">
           <h3><span class="zh">包管理器或直接解压</span><span class="en">Package manager, or unpack it</span></h3>
           <ul class="file-list">
-            <li><code>Markd-2026.11.19-linux-amd64.deb</code><span class="zh">Debian / Ubuntu</span><span class="en">Debian / Ubuntu</span></li>
-            <li><code>Markd-2026.11.19-linux-amd64.rpm</code><span class="zh">Fedora / openSUSE</span><span class="en">Fedora / openSUSE</span></li>
-            <li><code>Markd-2026.11.19-linux-amd64.tar.gz</code><span class="zh">直接跑二进制</span><span class="en">Run the binary directly</span></li>
+            <li><code>Markd-*-linux-amd64.deb</code><span class="zh">Debian / Ubuntu</span><span class="en">Debian / Ubuntu</span></li>
+            <li><code>Markd-*-linux-amd64.rpm</code><span class="zh">Fedora / openSUSE</span><span class="en">Fedora / openSUSE</span></li>
+            <li><code>Markd-*-linux-amd64.tar.gz</code><span class="zh">直接跑二进制</span><span class="en">Run the binary directly</span></li>
           </ul>
           <pre class="code"><code>sudo dpkg -i Markd-*.deb   # or:  sudo rpm -i Markd-*.rpm</code></pre>
           <p class="dl-note zh">两种包都会注册应用菜单项。运行依赖：</p>
@@ -599,7 +695,7 @@ cargo build --release -p markd</code></pre>
           <a class="btn btn-ghost" href="https://github.com/whboy10000/markd" target="_blank" rel="noopener">
             <span class="zh">源码仓库</span><span class="en">Source repository</span>
           </a>
-          <p class="dl-ver mono">latest tag · 2026.11.19.3</p>
+          <p class="dl-ver mono"><span class="zh">本页写作时最新 tag 2026.11.19.5 · 最新版本以 Releases 页为准</span><span class="en">Written against tag 2026.11.19.5 · check Releases for the newest build</span></p>
           <p class="zh dl-license">基于 <a href="https://github.com/whboy10000/markd/blob/main/LICENSE" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> 发布：任何非商业用途（个人学习、研究、爱好项目、公益 / 教育 / 政府机构）均可自由使用、修改与分发；商业用途需另行获得作者授权。</p>
           <p class="en dl-license">Released under <a href="https://github.com/whboy10000/markd/blob/main/LICENSE" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a>: free to use, modify, and redistribute for any noncommercial purpose — personal study, research, hobby projects, public-interest, education, and government use. Commercial use requires separate permission from the author.</p>
         </div>
