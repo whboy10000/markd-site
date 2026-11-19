@@ -1,0 +1,7 @@
+# Qoder Sites 本地描述文件：由工具生成，内含发布快照与云端资源 ID，不入库
+.Markd.qoder.site
+.qoder/
+
+# 系统杂项
+.DS_Store
+Thumbs.db
