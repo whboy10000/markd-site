@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Markd — 纯 Rust 从零实现的桌面 Markdown 编辑器 / A desktop Markdown editor built from scratch in Rust</title>
-<meta name="description" content="Markd 是一个纯 Rust + egui 从零实现的桌面 Markdown 编辑器：不套 Web 内核、不用 Electron/Tauri，自研 AST 无损往返、公式与 Mermaid 全自绘。实测 5 亿字富样式文档秒级加载、丝滑编辑，性能与功能全面超越同类竞品。支持 macOS / Windows / Linux。">
+<meta name="description" content="Markd 是一个纯 Rust + egui 从零实现的桌面 Markdown 编辑器：不套 Web 内核、不用 Electron/Tauri，自研 AST 无损往返、公式与 Mermaid 全自绘。实测 2 亿字富样式文档秒级加载、丝滑编辑，性能与功能全面超越同类竞品。支持 macOS / Windows / Linux。">
 <meta property="og:title" content="Markd — 每一个像素，都由 Rust 亲手绘制">
-<meta property="og:description" content="纯 Rust + egui 从零实现的桌面 Markdown 编辑器。实测 5 亿字富样式文档秒级加载、丝滑编辑；无 Web 内核，自研 AST，公式零栅格化，25+ Mermaid 图类型全自绘。">
+<meta property="og:description" content="纯 Rust + egui 从零实现的桌面 Markdown 编辑器。实测 2 亿字富样式文档秒级加载、丝滑编辑；无 Web 内核，自研 AST，公式零栅格化，25+ Mermaid 图类型全自绘。">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#05070e">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -71,12 +71,12 @@
 
       <aside class="hero-claim" data-reveal>
         <p class="claim-flag">
-          <b class="claim-flag-num mono"><span class="zh">5亿</span><span class="en">500M</span></b>
+          <b class="claim-flag-num mono"><span class="zh">2亿</span><span class="en">200M</span></b>
           <span class="claim-flag-copy"><span class="zh">字实测 · 秒级加载 · 丝滑编辑</span><span class="en">characters tested · loads in seconds · edits smoothly</span></span>
         </p>
         <p class="claim-slogan">
-          <span class="zh">Markd 是一款基于纯 Rust 与 egui 构建的桌面 Markdown 编辑器。经实测，即便是包含丰富样式的 <em class="grad-text">5 亿字</em> Markdown 文档，也能实现 <em class="grad-text">秒级加载</em> 与 <em class="grad-text">丝滑编辑</em>。在性能与功能上全面超越同类竞品，堪称当前 <em class="grad-text">最极致</em> 的 Markdown 编辑器，<em class="grad-text">没有之一</em>。</span>
-          <span class="en">Markd is a desktop Markdown editor built with pure Rust and egui. In our tests, even a richly styled <em class="grad-text">500-million-character</em> Markdown document loads in seconds and edits <em class="grad-text">buttery smooth</em>. It comprehensively outperforms every peer on both performance and features — simply the most extreme Markdown editor there is. <em class="grad-text">Bar none.</em></span>
+          <span class="zh">Markd 是一款基于纯 Rust 与 egui 构建的桌面 Markdown 编辑器。经实测，即便是包含丰富样式的 <em class="grad-text">2 亿字</em> Markdown 文档，也能实现 <em class="grad-text">秒级加载</em> 与 <em class="grad-text">丝滑编辑</em>。在性能与功能上全面超越同类竞品，堪称当前 <em class="grad-text">最极致</em> 的 Markdown 编辑器，<em class="grad-text">没有之一</em>。</span>
+          <span class="en">Markd is a desktop Markdown editor built with pure Rust and egui. In our tests, even a richly styled <em class="grad-text">200-million-character</em> Markdown document loads in seconds and edits <em class="grad-text">buttery smooth</em>. It comprehensively outperforms every peer on both performance and features — simply the most extreme Markdown editor there is. <em class="grad-text">Bar none.</em></span>
         </p>
         <ul class="claim-nums">
           <li><b class="mono">34.8 ms</b><span class="zh">打开首帧</span><span class="en">first frame</span></li>
@@ -85,7 +85,7 @@
           <li><b class="mono">2.7 ms</b><span class="zh">敲字一帧</span><span class="en">typing frame</span></li>
           <li><b class="mono">271 MB</b><span class="zh">常驻内存</span><span class="en">resident memory</span></li>
         </ul>
-        <p class="claim-proof"><span class="zh">5 亿字结论来自项目实测；下列数字取自 1000 万字公开基准（10,000,045 字符 / 17.6 MB / 241,046 个块，标题、段落、表格、代码块、公式与 Mermaid 混排），release 构建、同一台 macOS x86_64、视口宽 1280。</span><span class="en">The 500M-character result comes from project testing; the figures below use the public 10M-character baseline — 10,000,045 characters, 17.6 MB across 241,046 mixed blocks of headings, paragraphs, tables, code, math and Mermaid — measured on a release build, one macOS x86_64 machine, 1280-wide viewport.</span></p>
+        <p class="claim-proof"><span class="zh">2 亿字结论来自项目实测；下列数字取自 1000 万字公开基准（10,000,045 字符 / 17.6 MB / 241,046 个块，标题、段落、表格、代码块、公式与 Mermaid 混排），release 构建、同一台 macOS x86_64、视口宽 1280。</span><span class="en">The 200M-character result comes from project testing; the figures below use the public 10M-character baseline — 10,000,045 characters, 17.6 MB across 241,046 mixed blocks of headings, paragraphs, tables, code, math and Mermaid — measured on a release build, one macOS x86_64 machine, 1280-wide viewport.</span></p>
       </aside>
 
       <div class="hero-cta">
@@ -120,7 +120,7 @@
         </div>
         <p class="callout callout-1"><span class="zh">自研 AST · 源码无损往返</span><span class="en">In-house AST · lossless round-trip</span></p>
         <p class="callout callout-2"><span class="zh">公式零栅格化 · 直出 GPU</span><span class="en">Zero-rasterized math · straight to GPU</span></p>
-        <p class="callout callout-3"><span class="zh">5 亿字 · 秒级加载</span><span class="en">500M characters · loads in seconds</span></p>
+        <p class="callout callout-3"><span class="zh">2 亿字 · 秒级加载</span><span class="en">200M characters · loads in seconds</span></p>
       </div>
     </div>
   </section>
@@ -129,7 +129,7 @@
   <section class="statband" aria-label="Key numbers / 关键数字">
     <ul class="stats">
       <li><b class="stat-num" data-count="3" data-suffix="+">0</b><span class="zh">平台 · macOS / Windows / Linux</span><span class="en">Platforms · macOS / Windows / Linux</span></li>
-      <li><b class="stat-num" data-count="5" data-suffix="亿字" data-count-en="500" data-suffix-en="M chars">0</b><span class="zh">单文件流畅编辑体量</span><span class="en">characters per file, smoothly</span></li>
+      <li><b class="stat-num" data-count="2" data-suffix="亿字" data-count-en="200" data-suffix-en="M chars">0</b><span class="zh">单文件流畅编辑体量</span><span class="en">characters per file, smoothly</span></li>
       <li><b class="stat-num" data-count="25" data-suffix="+">0</b><span class="zh">自绘 Mermaid 图类型</span><span class="en">self-rendered diagram types</span></li>
       <li><b class="stat-num" data-count="220" data-suffix="+">0</b><span class="zh">编译期嵌入 SVG 图标</span><span class="en">compile-time embedded icons</span></li>
       <li><b class="stat-num" data-count="30" data-suffix="+">0</b><span class="zh">条快捷键体系</span><span class="en">keyboard shortcuts</span></li>
@@ -216,7 +216,7 @@
           </tr>
           <tr>
             <th scope="row"><span class="zh">长文档</span><span class="en">Long documents</span></th>
-            <td class="col-markd"><span class="zh">5 亿字单文件，秒级加载与丝滑编辑</span><span class="en">500-million-character files load in seconds and stay smooth</span></td>
+            <td class="col-markd"><span class="zh">2 亿字单文件，秒级加载与丝滑编辑</span><span class="en">200-million-character files load in seconds and stay smooth</span></td>
             <td><span class="zh">大文档滚动 / 输入常见卡顿</span><span class="en">Scrolling and typing stutter on big files</span></td>
           </tr>
           <tr>
@@ -439,8 +439,8 @@
     <div class="section-head">
       <p class="kicker"><span class="zh">性能</span><span class="en">Performance</span></p>
       <h2><span class="zh">每帧成本与文档总长无关。</span><span class="en">Frame cost is independent of document length.</span></h2>
-      <p class="section-lead zh">首页头条的 5 亿字结论来自项目实测；本节展示可复现的 1000 万字公开基准：10,000,045 字符 / 17.6 MB / 241,046 个块 —— 标题、段落、表格、代码块、公式与 Mermaid 混排。同一份语料、同一台机器（macOS x86_64，release 构建，视口宽 1280）上前后各测一遍。下面这张标尺可以直接拖：把 17.6 MB 的文档滚到任意位置，每帧排版的工作量都不变。</p>
-      <p class="section-lead en">The 500M-character headline comes from project testing; this section shows the reproducible 10M-character public baseline — 10,000,045 characters, 17.6&nbsp;MB, 241,046 blocks of mixed headings, paragraphs, tables, code, math and Mermaid — measured before and after on the same file on the same machine (macOS x86_64, release build, 1280-wide viewport). Drag the scale below: scroll that 17.6&nbsp;MB file anywhere you like, and the work per frame stays the same.</p>
+      <p class="section-lead zh">首页头条的 2 亿字结论来自项目实测；本节展示可复现的 1000 万字公开基准：10,000,045 字符 / 17.6 MB / 241,046 个块 —— 标题、段落、表格、代码块、公式与 Mermaid 混排。同一份语料、同一台机器（macOS x86_64，release 构建，视口宽 1280）上前后各测一遍。下面这张标尺可以直接拖：把 17.6 MB 的文档滚到任意位置，每帧排版的工作量都不变。</p>
+      <p class="section-lead en">The 200M-character headline comes from project testing; this section shows the reproducible 10M-character public baseline — 10,000,045 characters, 17.6&nbsp;MB, 241,046 blocks of mixed headings, paragraphs, tables, code, math and Mermaid — measured before and after on the same file on the same machine (macOS x86_64, release build, 1280-wide viewport). Drag the scale below: scroll that 17.6&nbsp;MB file anywhere you like, and the work per frame stays the same.</p>
     </div>
 
     <div class="scale" data-reveal>
