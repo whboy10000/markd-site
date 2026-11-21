@@ -27,7 +27,7 @@
   <a class="brand" href="#hero" aria-label="Markd">
     <img class="brand-mark" src="favicon.svg" alt="" width="32" height="32">
     <span class="brand-name">Markd</span>
-    <span class="brand-ver">2026.11.19</span>
+    <span class="brand-ver">2026.11.21</span>
   </a>
 
   <nav class="primary-nav" id="primary-nav" aria-label="Sections">
@@ -68,6 +68,18 @@
 
       <p class="hero-lead zh">Markd 是一个从零实现的桌面 Markdown 编辑器 —— 不套 Web 内核，不用 Tauri / Electron，不依赖任何现成编辑器组件。从 Markdown 解析到屏幕上的每一个三角形，都由它自己完成。</p>
       <p class="hero-lead en">Markd is a desktop Markdown editor implemented from scratch — no web kernel, no Tauri or Electron, no off-the-shelf editor component. From parsing Markdown to emitting every triangle on screen, it does all of the work itself.</p>
+
+      <aside class="hero-claim">
+        <p class="claim-slogan"><span class="zh">在性能与功能上全面超越同类竞品 —— <em class="grad-text">1000 万字以内</em>，最极致的 Markdown 编辑器，没有之一。</span><span class="en">Ahead of every peer on both performance and features — <em class="grad-text">under 10 million characters</em>, the most extreme Markdown editor there is. Bar none.</span></p>
+        <ul class="claim-nums">
+          <li><b class="mono">34.8 ms</b><span class="zh">打开首帧</span><span class="en">first frame</span></li>
+          <li><b class="mono">1.5 ms</b><span class="zh">静置一帧</span><span class="en">idle frame</span></li>
+          <li><b class="mono">5.5 ms</b><span class="zh">滚动一帧</span><span class="en">scroll frame</span></li>
+          <li><b class="mono">2.7 ms</b><span class="zh">敲字一帧</span><span class="en">typing frame</span></li>
+          <li><b class="mono">271 MB</b><span class="zh">常驻内存</span><span class="en">resident memory</span></li>
+        </ul>
+        <p class="claim-proof"><span class="zh">语料：10,000,045 字符 / 17.6 MB / 241,046 个块 —— 标题、段落、表格、代码块、公式与 Mermaid 混排，release 构建、同一台 macOS x86_64、视口宽 1280。数字取自项目 README 的千万字实测表；上面那行是口号，不是测量结果。</span><span class="en">Corpus: 10,000,045 characters — 17.6 MB across 241,046 mixed blocks of headings, paragraphs, tables, code, math and Mermaid — measured on a release build, one macOS x86_64 machine, 1280-wide viewport. Every figure comes from the 10M-character table in the project README; the line above is a slogan, not a measurement.</span></p>
+      </aside>
 
       <div class="hero-cta">
         <a class="btn btn-primary" href="#download">
@@ -247,14 +259,14 @@
 
       <article class="card">
         <h3><span class="zh">图片、代码组与多标签</span><span class="en">Images, code groups, multiple tabs</span></h3>
-        <p class="zh">截图直接粘贴即落盘并插入链接，图片拖右下角缩放；一键上传到 Gitee 图床（单图 20 MB 上限，路径模板支持 <span class="mono">{year}/{month}/{day}</span>），远程图片异步下载进纹理缓存，失败显示占位框。代码组是多语言 Tab 的容器，代码块可折叠并按文档绝对路径记住状态；每个文件一个标签，中键关闭，切走再回来光标与选中状态各归各的。</p>
-        <p class="en">Paste a screenshot and it lands on disk with the link inserted; drag an image's corner to resize it. One click uploads to a Gitee image host (20 MB per image, path templates like <span class="mono">{year}/{month}/{day}</span>), and remote images download asynchronously into the texture cache with a placeholder on failure. Code groups are multi-language tab containers, code blocks fold and remember their state per file path, and every file gets its own tab — middle-click closes it, and each tab keeps its own cursor and selection.</p>
+        <p class="zh">截图直接粘贴即落盘并插入链接，图片拖右下角缩放；上传图床支持 Gitee、GitHub 两个代码仓库与六个对象存储平台 —— 阿里云 OSS、七牛 Kodo、火山 TOS、百度 BOS、华为 OBS、腾讯云 COS（单图 20 MB 上限，路径模板支持 <span class="mono">{year}/{month}/{day}</span>、<span class="mono">{random}</span>、<span class="mono">{filename}</span>），远程图片异步下载进纹理缓存，失败显示占位框。代码组是多语言 Tab 的容器，代码块可折叠并按文档绝对路径记住状态；每个文件一个标签，中键关闭，切走再回来光标与选中状态各归各的。</p>
+        <p class="en">Paste a screenshot and it lands on disk with the link inserted; drag an image's corner to resize it. Uploads target two code hosts — Gitee and GitHub — plus six object-storage platforms: Alibaba OSS, Qiniu Kodo, Volcano TOS, Baidu BOS, Huawei OBS and Tencent COS (20 MB per image, path templates like <span class="mono">{year}/{month}/{day}</span>, <span class="mono">{random}</span> and <span class="mono">{filename}</span>), and remote images download asynchronously into the texture cache with a placeholder on failure. Code groups are multi-language tab containers, code blocks fold and remember their state per file path, and every file gets its own tab — middle-click closes it, and each tab keeps its own cursor and selection.</p>
       </article>
 
       <article class="card">
         <h3><span class="zh">集成终端</span><span class="en">Integrated terminal</span></h3>
-        <p class="zh">基于 PTY 的交互式 shell，支持彩色输出与备用屏（vim / less / htop 照常用），面板缩放通过 <span class="mono">SIGWINCH</span> 同步行列；终端获得焦点时应用快捷键让位。</p>
-        <p class="en">A PTY-backed interactive shell with color output and the alternate screen (vim / less / htop keep working), resizing synced via <span class="mono">SIGWINCH</span>; app shortcuts yield while the terminal has focus.</p>
+        <p class="zh">基于 PTY 的交互式 shell，支持彩色输出与备用屏（vim / less / htop 照常用），面板缩放通过 <span class="mono">SIGWINCH</span> 同步行列；可横向或纵向分屏，可开多个终端页签，终端配色还能单独切亮 / 暗。CJK 双宽字符按固定字符网格逐格绘制，中文文件名不会输出成 <span class="mono">?</span>。终端获得焦点时应用快捷键让位。</p>
+        <p class="en">A PTY-backed interactive shell with color output and the alternate screen (vim / less / htop keep working), resizing synced via <span class="mono">SIGWINCH</span>; split the pane horizontally or vertically, open several terminal tabs, and give the terminal its own light or dark palette. CJK double-width characters are drawn cell by cell on a fixed grid, so Chinese file names never come out as <span class="mono">?</span>. App shortcuts yield while the terminal has focus.</p>
       </article>
 
       <article class="card">
@@ -695,7 +707,7 @@ cargo build --release -p markd</code></pre>
           <a class="btn btn-ghost" href="https://github.com/whboy10000/markd" target="_blank" rel="noopener">
             <span class="zh">源码仓库</span><span class="en">Source repository</span>
           </a>
-          <p class="dl-ver mono"><span class="zh">本页写作时最新 tag 2026.11.19.5 · 最新版本以 Releases 页为准</span><span class="en">Written against tag 2026.11.19.5 · check Releases for the newest build</span></p>
+          <p class="dl-ver mono"><span class="zh">本页写作时最新 tag 2026.11.21.1 · 最新版本以 Releases 页为准</span><span class="en">Written against tag 2026.11.21.1 · check Releases for the newest build</span></p>
           <p class="zh dl-license">基于 <a href="https://github.com/whboy10000/markd/blob/main/LICENSE" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> 发布：任何非商业用途（个人学习、研究、爱好项目、公益 / 教育 / 政府机构）均可自由使用、修改与分发；商业用途需另行获得作者授权。</p>
           <p class="en dl-license">Released under <a href="https://github.com/whboy10000/markd/blob/main/LICENSE" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a>: free to use, modify, and redistribute for any noncommercial purpose — personal study, research, hobby projects, public-interest, education, and government use. Commercial use requires separate permission from the author.</p>
         </div>
